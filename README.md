@@ -84,19 +84,6 @@ Payout equation:
 - `capYearIndex = block.timestamp / 365 days`
 - on first settlement in a new bucket, `paidThisYearUSDC6` resets to `0`.
 
-## Trust Model and Security Assumptions
-
-This MVP is not oracle-decentralized.
-
-Trusted parties:
-- `owner`: can pause/unpause, rotate roles, set claim window, set annual cap, set payout engine.
-- `operator`: can settle claims.
-
-Operational assumptions:
-- off-chain process supplies truthful event data,
-- owner/operator keys are protected (prefer multisig in staging/prod),
-- payout engine configuration is audited before activation.
-
 ## Repo Layout
 
 - `src/` Solidity contracts
