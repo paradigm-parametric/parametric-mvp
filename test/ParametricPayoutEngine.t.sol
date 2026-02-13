@@ -155,11 +155,11 @@ contract ParametricPayoutEngineTest is Test {
 
     function test_quoteEventPayoutBreakdown_zeroWhenScaledAtOrBelowCorridor() public {
         ParametricPayoutEngine engine = _deployEngine(1e18, 1700e6, 0);
-        (, , , , uint256 netA) = engine.quoteEventPayoutBreakdown(100, 50);
+        (,,,, uint256 netA) = engine.quoteEventPayoutBreakdown(100, 50);
         assertEq(netA, 0);
 
         engine = _deployEngine(1e18, 1800e6, 0);
-        (, , , , uint256 netB) = engine.quoteEventPayoutBreakdown(100, 50);
+        (,,,, uint256 netB) = engine.quoteEventPayoutBreakdown(100, 50);
         assertEq(netB, 0);
     }
 

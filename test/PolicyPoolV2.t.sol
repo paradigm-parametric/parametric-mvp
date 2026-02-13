@@ -84,7 +84,8 @@ contract PolicyV2Test is Test {
     function test_triggerPayout_onlyOwner() public {
         ParametricPayoutEngine engine = _deployEngine(1e18, 0, 0);
         MockPayoutPool payoutPool = new MockPayoutPool();
-        PolicyV2 policy = _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
+        PolicyV2 policy =
+            _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
 
         vm.prank(bob);
         vm.expectRevert(bytes("not owner"));
@@ -94,7 +95,8 @@ contract PolicyV2Test is Test {
     function test_triggerPayout_revertsWhenNotStarted() public {
         ParametricPayoutEngine engine = _deployEngine(1e18, 0, 0);
         MockPayoutPool payoutPool = new MockPayoutPool();
-        PolicyV2 policy = _newPolicy(address(payoutPool), address(engine), block.timestamp + 1 days, block.timestamp + 2 days);
+        PolicyV2 policy =
+            _newPolicy(address(payoutPool), address(engine), block.timestamp + 1 days, block.timestamp + 2 days);
 
         vm.prank(alice);
         vm.expectRevert(bytes("not started"));
@@ -104,7 +106,8 @@ contract PolicyV2Test is Test {
     function test_triggerPayout_revertsWhenExpired() public {
         ParametricPayoutEngine engine = _deployEngine(1e18, 0, 0);
         MockPayoutPool payoutPool = new MockPayoutPool();
-        PolicyV2 policy = _newPolicy(address(payoutPool), address(engine), block.timestamp - 2 days, block.timestamp - 1 days);
+        PolicyV2 policy =
+            _newPolicy(address(payoutPool), address(engine), block.timestamp - 2 days, block.timestamp - 1 days);
 
         vm.prank(alice);
         vm.expectRevert(bytes("expired"));
@@ -114,7 +117,8 @@ contract PolicyV2Test is Test {
     function test_triggerPayout_revertsWhenNoPayout() public {
         ParametricPayoutEngine engine = _deployEngine(1e18, 0, 0);
         MockPayoutPool payoutPool = new MockPayoutPool();
-        PolicyV2 policy = _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
+        PolicyV2 policy =
+            _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
 
         vm.prank(alice);
         vm.expectRevert(bytes("no payout"));
@@ -125,7 +129,8 @@ contract PolicyV2Test is Test {
         ParametricPayoutEngine engine = _deployEngine(1e18, 0, 0);
         MockPayoutPool payoutPool = new MockPayoutPool();
         payoutPool.setShouldRevert(true);
-        PolicyV2 policy = _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
+        PolicyV2 policy =
+            _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
 
         vm.prank(alice);
         vm.expectRevert(bytes("mock payout failed"));
@@ -138,7 +143,8 @@ contract PolicyV2Test is Test {
     function test_triggerPayout_succeedsAgainstMockPool() public {
         ParametricPayoutEngine engine = _deployEngine(1e18, 0, 0);
         MockPayoutPool payoutPool = new MockPayoutPool();
-        PolicyV2 policy = _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
+        PolicyV2 policy =
+            _newPolicy(address(payoutPool), address(engine), block.timestamp - 1 days, block.timestamp + 1 days);
 
         vm.prank(alice);
         policy.triggerPayout(100, 50);

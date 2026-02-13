@@ -461,7 +461,7 @@ contract PolicyPoolTest is Test {
         assertEq(pool.paidThisYearUSDC6(), limit);
         assertEq(pool.totalActiveExposureUSDC6(), 0);
 
-        (, , , , , bool active, bool paidFlag) = pool.policies(policyId);
+        (,,,,, bool active, bool paidFlag) = pool.policies(policyId);
         assertFalse(active);
         assertTrue(paidFlag);
 

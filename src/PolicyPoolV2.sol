@@ -6,19 +6,10 @@ interface IPolicyPool {
 }
 
 interface IParametricPayoutEngine {
-    function quoteEventPayoutBreakdown(
-        uint256 windMph,
-        uint256 hailTenthIn
-    )
+    function quoteEventPayoutBreakdown(uint256 windMph, uint256 hailTenthIn)
         external
         view
-        returns (
-            uint256 windTierUSDC6,
-            uint256 hailTierUSDC6,
-            uint256 rawUSDC6,
-            uint256 scaledUSDC6,
-            uint256 netUSDC6
-        );
+        returns (uint256 windTierUSDC6, uint256 hailTierUSDC6, uint256 rawUSDC6, uint256 scaledUSDC6, uint256 netUSDC6);
 }
 
 contract PolicyV2 {
@@ -33,13 +24,7 @@ contract PolicyV2 {
     bool public active;
     bool public paid;
 
-    constructor(
-        address _pool,
-        address _payoutEngine,
-        uint256 _startDate,
-        uint256 _endDate,
-        uint256 _premiumUSDC6
-    ) {
+    constructor(address _pool, address _payoutEngine, uint256 _startDate, uint256 _endDate, uint256 _premiumUSDC6) {
         require(_pool != address(0), "bad pool");
         require(_payoutEngine != address(0), "bad engine");
         require(_endDate > _startDate, "bad dates");
@@ -65,8 +50,7 @@ contract PolicyV2 {
         require(block.timestamp >= startDate, "not started");
         require(block.timestamp <= endDate, "expired");
 
-        (,,,, uint256 netUSDC6) =
-            IParametricPayoutEngine(payoutEngine).quoteEventPayoutBreakdown(windMph, hailTenthIn);
+        (,,,, uint256 netUSDC6) = IParametricPayoutEngine(payoutEngine).quoteEventPayoutBreakdown(windMph, hailTenthIn);
 
         require(netUSDC6 > 0, "no payout");
 

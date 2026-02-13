@@ -8,19 +8,10 @@ interface IERC20Like {
 }
 
 interface IParametricPayoutEngine {
-    function quoteEventPayoutBreakdown(
-        uint256 windMph,
-        uint256 hailTenthIn
-    )
+    function quoteEventPayoutBreakdown(uint256 windMph, uint256 hailTenthIn)
         external
         view
-        returns (
-            uint256 windTierUSDC6,
-            uint256 hailTierUSDC6,
-            uint256 rawUSDC6,
-            uint256 scaledUSDC6,
-            uint256 netUSDC6
-        );
+        returns (uint256 windTierUSDC6, uint256 hailTierUSDC6, uint256 rawUSDC6, uint256 scaledUSDC6, uint256 netUSDC6);
 }
 
 contract PolicyPool {
@@ -51,10 +42,10 @@ contract PolicyPool {
     IParametricPayoutEngine public payoutEngine;
 
     // --- Annual cap ---
-    uint256 public annualCapUSDC6;         // e.g. 50_000_000 * 1e6 for $50M if you want
-    uint256 public paidThisYearUSDC6;      // running total of payouts paid
-    uint256 public capYearIndex;           // year bucket = block.timestamp / 365 days
-    uint256 public claimWindowSec;         // 0 means no claim deadline after event
+    uint256 public annualCapUSDC6; // e.g. 50_000_000 * 1e6 for $50M if you want
+    uint256 public paidThisYearUSDC6; // running total of payouts paid
+    uint256 public capYearIndex; // year bucket = block.timestamp / 365 days
+    uint256 public claimWindowSec; // 0 means no claim deadline after event
     uint256 public totalActiveExposureUSDC6;
 
     // --- Policy store ---
@@ -189,12 +180,11 @@ contract PolicyPool {
     }
 
     // --- Core: buy policy ---
-    function buyPolicy(
-        uint256 premiumUSDC6,
-        uint256 limitUSDC6,
-        uint64 startDate,
-        uint64 endDate
-    ) external whenNotPaused returns (uint256 policyId) {
+    function buyPolicy(uint256 premiumUSDC6, uint256 limitUSDC6, uint64 startDate, uint64 endDate)
+        external
+        whenNotPaused
+        returns (uint256 policyId)
+    {
         require(endDate > startDate, "bad dates");
         require(startDate >= block.timestamp, "start in past");
         require(premiumUSDC6 > 0, "zero premium");
@@ -233,12 +223,12 @@ contract PolicyPool {
 
     // --- Option 2 FIX: settle policy in one call ---
     // This is the function your Day 4 + Day 5 demo should use.
-    function settlePolicy(
-        uint256 policyId,
-        uint256 windMph,
-        uint256 hailTenthIn,
-        uint64 eventTimestamp
-    ) external onlyOperator whenNotPaused returns (uint256 netPaidUSDC6) {
+    function settlePolicy(uint256 policyId, uint256 windMph, uint256 hailTenthIn, uint64 eventTimestamp)
+        external
+        onlyOperator
+        whenNotPaused
+        returns (uint256 netPaidUSDC6)
+    {
         require(address(payoutEngine) != address(0), "engine not set");
 
         Policy storage p = policies[policyId];
@@ -251,13 +241,7 @@ contract PolicyPool {
             require(block.timestamp <= eventTimestamp + claimWindowSec, "claim window passed");
         }
 
-        (
-            ,
-            ,
-            ,
-            ,
-            uint256 netUSDC6
-        ) = payoutEngine.quoteEventPayoutBreakdown(windMph, hailTenthIn);
+        (,,,, uint256 netUSDC6) = payoutEngine.quoteEventPayoutBreakdown(windMph, hailTenthIn);
 
         require(netUSDC6 > 0, "no payout");
 

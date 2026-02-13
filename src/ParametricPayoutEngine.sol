@@ -67,13 +67,7 @@ contract ParametricPayoutEngine {
     function quoteEventPayoutBreakdown(uint256 windMph, uint256 hailTenthIn)
         external
         view
-        returns (
-            uint256 windTierUSDC6,
-            uint256 hailTierUSDC6,
-            uint256 rawUSDC6,
-            uint256 scaledUSDC6,
-            uint256 netUSDC6
-        )
+        returns (uint256 windTierUSDC6, uint256 hailTierUSDC6, uint256 rawUSDC6, uint256 scaledUSDC6, uint256 netUSDC6)
     {
         windTierUSDC6 = _tierLookup(windMph, windBinsMph, windPayoutUSDC6);
         hailTierUSDC6 = _tierLookup(hailTenthIn, hailBinsTenthIn, hailPayoutUSDC6);
@@ -96,7 +90,11 @@ contract ParametricPayoutEngine {
         }
     }
 
-    function _tierLookup(uint256 x, uint256[] storage binsRight, uint256[] storage pays) internal view returns (uint256) {
+    function _tierLookup(uint256 x, uint256[] storage binsRight, uint256[] storage pays)
+        internal
+        view
+        returns (uint256)
+    {
         // Find first bin where x <= rightEdge
         for (uint256 i = 0; i < binsRight.length; i++) {
             if (x <= binsRight[i]) return pays[i];
