@@ -1,4 +1,9 @@
-# Parametric Insurance MVP (Centralized Operator Model)
+<img
+src="./logo.png"
+alt=""
+style="display:block;margin:0 auto;width:500px;">
+
+# Parametric Insurance MVP 
 
 This repository contains a centralized, off-chain-assisted parametric insurance MVP.
 
@@ -148,16 +153,3 @@ Typical order:
    - `transferOperator(newOperator)` by owner
    - `acceptOperatorRole()` by new operator.
 
-## Known Limitations
-
-- Centralized event adjudication (no signed oracle payload verification yet).
-- No withdraw/treasury management function in pool.
-- No policy cancellation or endorsements.
-- `PolicyV2` is legacy and not compatible with hardened pool payout path.
-
-## Next Recommended Upgrades
-
-- EIP-712 signed claim payloads from trusted off-chain oracle/operator.
-- Multisig owner/operator accounts.
-- Explicit claim IDs and idempotency keys for off-chain reconciliation.
-- Policy cancellation and pro-rata premium refund flow.
