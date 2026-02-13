@@ -1,8 +1,9 @@
+<p align="center">
 <img
 src="./logo.png"
 alt=""
 style="display:block;margin:0 auto;width:500px;">
-
+</p>
 # Parametric Insurance MVP 
 
 This repository contains a centralized, off-chain-assisted parametric insurance MVP.
